@@ -9,42 +9,54 @@ const passwordEncrypt = require("../helpers/passwordEncrypt");
 
 module.exports = {
   login: async (req, res) => {
-    const { password, email } = req.body;
-    const user = User.findOne({ password, email });
-    const isVerified = user?.verified;
-    if (password && email) {
-      if (user && isVerified) {
-        const tokenData =
-          "Token " + passwordEncrypt(newUser._id + `${new Date()}`);
+      const { password, email } = req.body;
+
+      if (!password || !email) {
+        res.status(401).send({
+          error: true,
+          message: "Email and password are required.",
+        });
+        return;
+      }
+
+      const user = await User.findOne({ email });
+
+      if (user && user?.password == password) {
+        const tokenData = "Token " + passwordEncrypt(user._id + `${new Date()}`);
         res.status(201).send({
           error: false,
           result: user,
           Token: tokenData,
         });
       } else {
-        res.errorStatusCode = 401;
-        throw new Error("Login parameters are not true.");
+        res.status(401).send({
+          error: true,
+          message: "Login parameters are not correct.",
+        });
       }
-    } else {
-      res.errorStatusCode = 401;
-      throw new Error("Email and password are required.");
-    }
   },
 
   logout: async (req, res) => {
-    const token = (await req.headers?.authorization) || null;
-    let message = "";
+    try {
+      const token = req?.headers?.authorization || null;
+      let message = "";
 
-    if (token) {
-    await Token.deleteOne({ token: token });
-      message = "Successfully logged out. ";
-    } else {
-      message = "Logout failed.";
+      if (token) {
+        await Token.deleteOne({ token });
+        message = "Successfully logged out.";
+      } else {
+        message = "Logout failed.";
+      }
+
+      res.status(200).send({
+        error: false,
+        message: message,
+      });
+    } catch (err) {
+      res.status(500).send({
+        error: true,
+        message: err.message,
+      });
     }
-
-    res.status(200).send({
-      error: false,
-      message: message,
-    });
-  },
+  }
 };

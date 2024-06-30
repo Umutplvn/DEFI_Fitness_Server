@@ -35,7 +35,8 @@ app.all('/', (req, res)=>{
 
 /*--------------------------------------*/
 //! Routes:
-app.use("/auth", require("./src/routes/user"))
+app.use("/users", require("./src/routes/user"))
+app.use("/auth", require("./src/routes/auth"))
 
 
 
