@@ -42,6 +42,11 @@ const UserSchema = new mongoose.Schema(
         required: true,
         set: (password) => passwordEncrypt(password),
       },
+      
+      verified: {
+        type: Boolean,
+        default: false,
+      },
 
       isAdmin:{
         type:Boolean,
