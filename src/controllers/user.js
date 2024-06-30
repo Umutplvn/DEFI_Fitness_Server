@@ -55,6 +55,7 @@ module.exports = {
       error: false,
       result: data,
     });
+
   },
 
   update: async (req, res) => {

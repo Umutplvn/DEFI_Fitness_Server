@@ -18,6 +18,9 @@ app.use(require('cors')())
 //! Connect to MongoDB with Mongoose:
 require('./src/configs/dbConnection')
 
+//! Authorization
+app.use(require("./src/middlewares/authorization"));
+
 /*--------------------------------------*/
 //! Searching&Sorting&Pagination:
 app.use(require('./src/middlewares/findSearchSortPage'))

@@ -19,10 +19,12 @@ module.exports = {
         return;
       }
 
-      const user = await User.findOne({ email });
+      const user = await User.findOne({ email, password });
 
-      if (user && user?.password == password) {
+      if (user) {
         const tokenData = "Token " + passwordEncrypt(user._id + `${new Date()}`);
+        await Token.create({ userId: user._id, token: tokenData });
+
         res.status(201).send({
           error: false,
           result: user,
