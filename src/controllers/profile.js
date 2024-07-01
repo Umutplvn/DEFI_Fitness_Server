@@ -8,13 +8,11 @@ const Profile = require("../models/profile");
 
 module.exports = {
   create: async (req, res) => {
-    const { avatar, height, weight, sportBranch, PR, size } = req.body;
+    const { height, weight, PR, size } = req.body;
 
     const profile = await Profile.create({
-      avatar,
       height,
       weight,
-      sportBranch,
       PR,
       size,
       userId: req.user,
@@ -28,36 +26,30 @@ module.exports = {
 
   read: async (req, res) => {
     const { userId } = req.params;
-    const profile = await Profile.findOne({ userId: userId });
+    const profile = await Profile.find({ userId: userId });
     res.send({
       Profile: profile,
     });
   },
 
-
   update: async (req, res) => {
-    // SAMPLE DATA
-    // {
-    //     "subDocType": "size",
-    //     "subDocId": "78679675674543",
+    // SAMPLE DATA - Hangi datayi degistirirsen degistir diger verileride yollaman lazim
+    //   {
+    //     "subDocType": "PR",
+    //     "subDocId": "66820cb321cf6c1d811bd50e",
     //     "updateData": {
-    //         "Bench": "180",
-    //                 "Wist": "70",
-    //                 "Biceps": "45",
-    //                 "Shoulder": "150",
-    //                 "Chest": "180",
-    //                 "Leg": "60",
-    //                 "Date": "30.06.2024",
-    //         "id":"78679675674543"
+    //         "Bench": "190",
+    //         "Squat": "180",
+    //         "Deadlift": "100",
+    //         "Date": "30.06.2024"
     //     }
     // }
 
-    const { userId } = req.params;
     const { subDocType, subDocId, updateData } = req.body;
 
     const updatedProfile = await Profile.findOneAndUpdate(
-      { userId: userId, [`${subDocType}.id`]: subDocId },
-      { $set: { [`${subDocType}.$`]: updateData } },
+      { _id: subDocId },
+      { $set: { [`${subDocType}`]: updateData } },
       { new: true }
     );
 
@@ -67,8 +59,9 @@ module.exports = {
     });
   },
 
+
   delete: async (req, res) => {
-    const {dataId}=req.body
+    const { dataId } = req.body;
     const data = await Profile.deleteOne({ _id: dataId });
     if (data.deletedCount >= 1) {
       res.send({
