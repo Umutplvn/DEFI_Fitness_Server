@@ -18,7 +18,7 @@ app.use(require('cors')())
 //! Connect to MongoDB with Mongoose:
 require('./src/configs/dbConnection')
 
-//! Authorization
+//!
 app.use(require("./src/middlewares/authorization"));
 
 /*--------------------------------------*/
@@ -40,6 +40,7 @@ app.all('/', (req, res)=>{
 //! Routes:
 app.use("/users", require("./src/routes/user"))
 app.use("/auth", require("./src/routes/auth"))
+app.use("/profile", require("./src/routes/profile"))
 
 
 

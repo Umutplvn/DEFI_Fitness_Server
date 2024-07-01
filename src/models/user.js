@@ -51,7 +51,15 @@ const UserSchema = new mongoose.Schema(
       isAdmin:{
         type:Boolean,
         default:false
-      }
+      },
+
+
+    avatar: {
+      type: String,
+      trim: true,
+      default:
+        "https://www.google.com/url?sa=i&url=http%3A%2F%2Fwww.laptoppcapk.com%2Ffitness-point%2F&psig=AOvVaw0gWJzVmLitXNL91MZXqtOu&ust=1719788775218000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCKCU5sv2gYcDFQAAAAAdAAAAABAJ",
+    }
 
   },
   { timestamps: true, collection: "user" }
