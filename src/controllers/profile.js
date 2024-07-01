@@ -21,7 +21,7 @@ module.exports = {
     });
 
     res.send({
-      message: "Profile created",
+      message: "Profile data has added successfully.",
       Profile: profile,
     });
   },
@@ -67,6 +67,17 @@ module.exports = {
     });
   },
 
-  // DELETE WEEK
-
+  delete: async (req, res) => {
+    const {dataId}=req.body
+    const data = await Profile.deleteOne({ _id: dataId });
+    if (data.deletedCount >= 1) {
+      res.send({
+        message: "Data successfully deleted",
+      });
+    } else {
+      res.send({
+        message: "There is no recording to be deleted.",
+      });
+    }
+  },
 };
