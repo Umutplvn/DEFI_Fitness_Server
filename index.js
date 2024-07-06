@@ -41,6 +41,7 @@ app.all('/', (req, res)=>{
 app.use("/users", require("./src/routes/user"))
 app.use("/auth", require("./src/routes/auth"))
 app.use("/profile", require("./src/routes/profile"))
+app.use("/", require("./src/routes/chat"))
 
 
 
