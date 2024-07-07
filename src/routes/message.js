@@ -9,7 +9,8 @@ router.post('/newmessage', Message.create)
 router.put('/reaction', Message.addReaction)
 router.patch('/reaction', Message.addReaction)
 router.post('/reply', Message.reply)
-router.delete('/delete', Message.delete)
+router.put('/delete', Message.delete)
+router.patch('/delete', Message.delete)
 
 
 

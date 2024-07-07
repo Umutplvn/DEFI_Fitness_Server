@@ -6,6 +6,9 @@
 const mongoose = require("mongoose");
 
 const ChatSchema = new mongoose.Schema(
+// {
+//   "secondId": "6689cdaba23dfeb3eefd944f"
+// }
   {
     memberId: Array,
 
@@ -19,7 +22,7 @@ const ChatSchema = new mongoose.Schema(
     messages:
       {
         type: Number,
-        default:""
+        default:0
       },
     
     lastMessage: {

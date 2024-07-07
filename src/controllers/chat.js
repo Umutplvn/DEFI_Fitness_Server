@@ -49,11 +49,11 @@ module.exports = {
     // Number of unread messages = 0
     const userId = req.user
     const {secondId}=req.params
-    const chat = await Chat.find({ memberId: { $in: [userId, secondId] } })
-    await Chat.updateOne({_id:chat[0]._id}, {messages:0})
+    const chat = await Chat.findOne({ memberId: { $in: [userId, secondId] } })
+    await Chat.updateOne({_id:chat._id}, {messages:0})
 
     res.send({
-        result:await Chat.find({ memberId: { $in: [userId, secondId] } })
+        result:await Chat.findOne({ memberId: { $in: [userId, secondId] } })
     });
   },
 

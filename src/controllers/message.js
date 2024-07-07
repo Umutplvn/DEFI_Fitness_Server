@@ -10,14 +10,19 @@ const User = require("../models/user");
 ------------------------------------------------------- */
 
 module.exports = {
+  
   create: async (req, res) => {
+  //   {
+  //     "text": "Deneme 1",
+  //     "chatId":"6689f28f0b1efbdb235d1104"
+  // }
     const { text, chatId } = req.body;
-    const { name, avatar } = await User.findOne({ _id: req.user });
+    const { name, avatar, _id } = await User.findOne({ _id: req.user });
     
     const content = await Message.create({
       text,
       chatId,
-      sender: { name, avatar },
+      sender: { name, avatar, _id },
     });
 
     await Chat.updateOne(
@@ -31,8 +36,13 @@ module.exports = {
   },
 
   addReaction:async(req,res)=>{
+  // {
+  //     "messageId": "6689f3ca210ed343339116d0",
+  //     "reaction":"😍"
+  // }
+
     const {messageId, reaction}=req.body
-    const message= await Message.updateOne({_id:messageId}, {reaction:reaction})
+    await Message.updateOne({_id:messageId}, {reaction:reaction})
 
       res.status(200).send({
         message:await Message.findOne({_id:messageId})
@@ -41,6 +51,11 @@ module.exports = {
   },
 
   reply:async(req,res)=>{
+  // {
+  //     "replyMessageId": "6689f3ca210ed343339116d0",
+  //     "text":"Reply to message 1, deneme1 content",
+  //     "chatId":"6689f28f0b1efbdb235d1104"
+  // }
     const {replyMessageId, text, chatId}=req.body
     const { name, avatar } = await User.findOne({ _id: req.user });
 
@@ -57,16 +72,22 @@ module.exports = {
 
 
   delete: async (req, res) => {
-    const { messageId } = req.body;
-    const data = await Message.deleteOne({ _id: messageId });
-    if (data.deletedCount >= 1) {
-      res.send({
-        message: "Message successfully deleted",
-      });
-    } else {
-      res.send({
-        message: "There is no message to be deleted.",
-      });
+  //   {
+  //     "messageId": "6689f900f22d2d8a84cc421e",
+  //     "chatId":"6689f28f0b1efbdb235d1104"
+  // }
+    const { messageId, chatId } = req.body;
+
+    const chat=await Chat.findOne({_id:chatId})
+    const data = await Message.updateOne({ _id: messageId }, {text:"This message has been deleted.", reaction:"", sender:"", replyTo:""});
+    
+    if(chat?.lastMessage?._id==messageId){
+      await Chat.updateOne({_id:chatId}, {lastMessage:{text:"This message has been deleted.", reaction:"", sender:"", replyTo:""}})
     }
+
+    res.status(200).send({
+      data:await Message.findOne({_id:messageId})
+    });
+
   },
 };

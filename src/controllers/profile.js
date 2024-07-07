@@ -35,8 +35,8 @@ module.exports = {
   update: async (req, res) => {
     // SAMPLE DATA - Hangi datayi degistirirsen degistir diger verileride yollaman lazim
     //   {
-    //     "subDocType": "PR",
-    //     "subDocId": "66820cb321cf6c1d811bd50e",
+    //     "subDocType": "PR", _id verisi
+    //     "subDocId": "66820cb321cf6c1d811bd50e", 
     //     "updateData": {
     //         "Bench": "190",
     //         "Squat": "180",

@@ -7,6 +7,13 @@ const mongoose = require("mongoose");
 const passwordEncrypt = require("../helpers/passwordEncrypt");
 
 const UserSchema = new mongoose.Schema(
+
+// {
+//   "email":"user@site.com",
+//   "password":"1234",
+//   "name":"user"    
+// }
+
   {
     email: {
       type: String,
