@@ -26,6 +26,10 @@ const MessageSchema = new mongoose.Schema(
     
      sender:{
         type:Object
+     },
+
+     replyTo:{
+        type:Object
      }
   },
 
