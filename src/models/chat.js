@@ -8,7 +8,7 @@ const mongoose = require("mongoose");
 const ChatSchema = new mongoose.Schema(
   {
     memberId: Array,
-    
+
     members: Object,
 
     show: {
@@ -16,11 +16,15 @@ const ChatSchema = new mongoose.Schema(
       default: false,
     },
 
-    messages: [
+    messages:
       {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Number,
+        default:""
       },
-    ],
+    
+    lastMessage: {
+      type: Object,
+    },
   },
 
   { timestamps: true, collection: "chat" }

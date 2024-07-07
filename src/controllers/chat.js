@@ -38,7 +38,6 @@ module.exports = {
 
   findChats: async (req, res) => {
     const userId = req.user
-
     const chats = await Chat.find({ memberId: { $in: [userId] } })
     res.send({
         result:chats
@@ -47,12 +46,14 @@ module.exports = {
 
 
   findAChat: async (req, res) => {
+    // Number of unread messages = 0
     const userId = req.user
     const {secondId}=req.params
     const chat = await Chat.find({ memberId: { $in: [userId, secondId] } })
+    await Chat.updateOne({_id:chat[0]._id}, {messages:0})
 
     res.send({
-        result:chat
+        result:await Chat.find({ memberId: { $in: [userId, secondId] } })
     });
   },
 
