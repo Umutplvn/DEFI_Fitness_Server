@@ -10,6 +10,18 @@ const User = require("../models/user");
 ------------------------------------------------------- */
 
 module.exports = {
+
+  list:async (req, res) => {
+
+    const {chatId } = req.body
+    const messages= await Message.find({chatId:chatId})
+
+    res.send({
+      result:messages
+    })
+
+  },
+
   
   create: async (req, res) => {
   //   {
@@ -34,6 +46,7 @@ module.exports = {
 
     res.status(200).json(message);
   },
+
 
   addReaction:async(req,res)=>{
   // {
@@ -79,10 +92,10 @@ module.exports = {
     const { messageId, chatId } = req.body;
 
     const chat=await Chat.findOne({_id:chatId})
-    const data = await Message.updateOne({ _id: messageId }, {text:"This message has been deleted.", reaction:"", sender:"", replyTo:""});
+    const data = await Message.updateOne({ _id: messageId }, {text:"This message has been deleted.", reaction:"", replyTo:""});
     
     if(chat?.lastMessage?._id==messageId){
-      await Chat.updateOne({_id:chatId}, {lastMessage:{text:"This message has been deleted.", reaction:"", sender:"", replyTo:""}})
+      await Chat.updateOne({_id:chatId}, {lastMessage:{text:"This message has been deleted.", reaction:"", replyTo:""}})
     }
 
     res.status(200).send({
