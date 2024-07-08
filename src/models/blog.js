@@ -42,8 +42,9 @@ const BlogSchema = new mongoose.Schema(
 
     comments: [
       {
-        type: Object,
-      },
+        type: mongoose.Schema.Types.ObjectId,
+        ref:"Comment"
+    },
     ],
 
     likes: [
@@ -51,6 +52,17 @@ const BlogSchema = new mongoose.Schema(
         type: String,
       },
     ],
+
+    likes_n:{
+        type: Number,
+        default:0,
+        transform: function(){ return this.likes.length }
+    },
+
+    post_views:[{
+        type:String
+    }]
+
   },
   {
     timestamps: true,

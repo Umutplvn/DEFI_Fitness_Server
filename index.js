@@ -44,6 +44,7 @@ app.use("/profile", require("./src/routes/profile"))
 app.use("/", require("./src/routes/chat"))
 app.use("/", require("./src/routes/message"))
 app.use("/blog", require("./src/routes/blog"))
+app.use("/comment", require("./src/routes/comment"))
 
 
 

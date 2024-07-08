@@ -44,7 +44,7 @@ module.exports = {
 
   read: async (req, res) => {
     const { blogId } = req.params;
-
+    await Blog.updateOne({ _id:blogId }, { $addToSet: { post_views: req.user } })
     const blog = await Blog.findOne({ _id: blogId }).populate("comments");
 
     res.status(200).send({
@@ -58,7 +58,7 @@ module.exports = {
     });
     res.status(202).send({
       error: false,
-      result: await Blog.findOne({ _id: req.params.blogId }),
+      result: await Blog.findOne({ _id: req.params.blogId }).populate("comments"),
     });
   },
 
