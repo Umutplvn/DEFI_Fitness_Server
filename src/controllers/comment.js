@@ -28,6 +28,19 @@ module.exports = {
     });
   },
 
+  read: async (req, res) => {
+    //     "commentId":"6691d5427814085bc825370e"
+    const {commentId}=req.body
+    const comment= await Comment.findOne({_id:commentId})
+
+    res.send({
+      error: false,
+      result: comment,
+    });
+
+  },
+
+
   update: async (req, res) => {
     // {
     //     "text": "Deneme update",
@@ -47,15 +60,15 @@ module.exports = {
   },
 
   delete: async (req, res) => {
-    const { chatId } = req.body;
-    const data = await Chat.deleteOne({ _id: chatId });
+    const { commentId } = req.body;
+    const data = await Comment.deleteOne({ _id: commentId });
     if (data.deletedCount >= 1) {
       res.send({
-        message: "Chat successfully deleted",
+        message: "Comment successfully deleted",
       });
     } else {
       res.send({
-        message: "There is no chat to be deleted.",
+        message: "There is no comment to be deleted.",
       });
     }
   },
