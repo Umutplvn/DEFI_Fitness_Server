@@ -61,6 +61,11 @@ const UserSchema = new mongoose.Schema(
         default:false
       },
 
+      isPremium:{
+        type:Boolean,
+        default:false
+      },
+
 
     avatar: {
       type: String,

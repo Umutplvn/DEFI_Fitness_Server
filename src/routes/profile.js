@@ -4,11 +4,12 @@
 ------------------------------------------------------- */
 const router=require('express').Router()
 const Profile=require('../controllers/profile')
+const permissions =require('../middlewares/permissions')
 
-router.post('/', Profile.create)
-router.get('/:userId', Profile.read)
-router.put('/update/:userId', Profile.update)
-router.delete('/delete', Profile.delete)
+router.route('/').post(Profile.create)
+router.route('/:userId').get(permissions.isOwn, Profile.read)
+router.route('/update/:userId').put(permissions.isOwn, Profile.update)
+router.route('/delete').delete(permissions.isOwn, Profile.delete)
 
 
 
