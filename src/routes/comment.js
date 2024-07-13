@@ -6,7 +6,7 @@ const router=require('express').Router()
 const Comment=require('../controllers/comment')
 
 router.post('/:blogId', Comment.create)
-router.put('/update/:blogId', Comment.update)
+router.put('/update', Comment.update)
 
 
 
