@@ -9,33 +9,33 @@ const passwordEncrypt = require("../helpers/passwordEncrypt");
 
 module.exports = {
   login: async (req, res) => {
-      const { password, email } = req.body;
+    const { password, email } = req.body;
 
-      if (!password || !email) {
-        res.status(401).send({
-          error: true,
-          message: "Email and password are required.",
-        });
-        return;
-      }
+    if (!password || !email) {
+      res.status(401).send({
+        error: true,
+        message: "Email and password are required.",
+      });
+      return;
+    }
 
-      const user = await User.findOne({ email, password });
+    const user = await User.findOne({ email, password });
 
-      if (user) {
-        const tokenData = "Token " + passwordEncrypt(user._id + `${new Date()}`);
-        await Token.create({ userId: user._id, token: tokenData });
+    if (user) {
+      const tokenData = "Token " + passwordEncrypt(user._id + `${new Date()}`);
+      await Token.create({ userId: user._id, token: tokenData });
 
-        res.status(201).send({
-          error: false,
-          result: user,
-          Token: tokenData,
-        });
-      } else {
-        res.status(401).send({
-          error: true,
-          message: "Login parameters are not correct.",
-        });
-      }
+      res.status(201).send({
+        error: false,
+        result: user,
+        Token: tokenData,
+      });
+    } else {
+      res.status(401).send({
+        error: true,
+        message: "Login parameters are not correct.",
+      });
+    }
   },
 
   logout: async (req, res) => {
@@ -60,5 +60,5 @@ module.exports = {
         message: err.message,
       });
     }
-  }
+  },
 };
