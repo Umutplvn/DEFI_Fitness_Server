@@ -35,7 +35,6 @@ app.all('/', (req, res)=>{
     })
 })
 
-
 /*--------------------------------------*/
 //! Routes:
 app.use("/users", require("./src/routes/user"))
