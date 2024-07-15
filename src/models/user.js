@@ -80,4 +80,10 @@ const UserSchema = new mongoose.Schema(
   { timestamps: true, collection: "user" }
 );
 
+
+UserSchema.path('password').validate(function (value) {
+  return value.length >= 8;
+}, '* At least 8 characters long.');
+
+
 module.exports = mongoose.model("User", UserSchema);
