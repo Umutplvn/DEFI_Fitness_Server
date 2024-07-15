@@ -46,7 +46,6 @@ const UserSchema = new mongoose.Schema(
       set: (password) => passwordEncrypt(password),
       validate: {
         validator: (password) => passwordPattern.test(password),
-        validator: (password) => passwordPattern.test(password),
         message: "Password must be at least 8 characters long."}
     },
 
