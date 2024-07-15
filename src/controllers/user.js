@@ -73,8 +73,9 @@ module.exports = {
   },
 
   delete: async (req, res) => {
-    const data = await User.deleteOne({ _id: req.params.userId });
-    await Token.deleteOne({ userId: req.params.userId });
+    const {userId}= req.params
+    const data = await User.deleteOne({ _id:userId });
+    await Token.deleteOne({ userId: userId });
     if (data.deletedCount >= 1) {
       res.send({
         message: "Successfully deleted",
