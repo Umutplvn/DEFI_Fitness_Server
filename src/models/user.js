@@ -7,7 +7,7 @@ const mongoose = require("mongoose");
 const passwordEncrypt = require("../helpers/passwordEncrypt");
 
 // Regex pattern for password validation
-const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>])[a-zA-Z\d!@#$%^&*(),.?":{}|<>]{8,}$/;
+const passwordPattern = /^.{8,}$/;
 
 const UserSchema = new mongoose.Schema(
   {
@@ -46,9 +46,8 @@ const UserSchema = new mongoose.Schema(
       set: (password) => passwordEncrypt(password),
       validate: {
         validator: (password) => passwordPattern.test(password),
-        message: (props) =>
-          `${props.value} is not a valid password format. Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.`,
-      },
+        validator: (password) => passwordPattern.test(password),
+        message: "Password must be at least 8 characters long."}
     },
 
     verified: {
