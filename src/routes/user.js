@@ -11,7 +11,7 @@ router.route("/register").post(User.create)
 
 router.route("/:userId")
   .get(permissions.isOwn, User.read)
-  .put(permissions.isOwn, User.update)
+  .put(User.update)
   .delete( User.delete);
 
   module.exports = router;
