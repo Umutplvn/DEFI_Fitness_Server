@@ -34,7 +34,7 @@ module.exports = {
   isOwn: async (req, res, next) => {
     const user = await User.findOne({ _id: req.user });
     const {userId}=req.params
-    if(user._id==userId || user.isAdmin){
+    if (user._id.toString() === userId || user.isAdmin) {
       next()
     }else {
       res.send({
