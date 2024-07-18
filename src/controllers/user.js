@@ -107,7 +107,7 @@ module.exports = {
     res.status(201).send({
       error: false,
       Token: tokenData,
-      user:user,
+      result:user,
     });
   },
 
