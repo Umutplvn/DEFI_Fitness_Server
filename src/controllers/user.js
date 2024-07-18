@@ -100,9 +100,9 @@ module.exports = {
       return;
     }
     const tokenData = "Token " + passwordEncrypt(user._id + `${new Date()}`);
-    const token = await Token.create({ userId: user._id, token: tokenData });
+    await Token.create({ userId: user._id, token: tokenData });
 
-    fotgotPassVerify({email, name:upName, token:token._id});
+    fotgotPassVerify({email, name:upName, userId:user._id});
 
     res.status(201).send({
       error: false,
