@@ -89,31 +89,32 @@ module.exports = {
   },
 
   forgotPass: async (req, res) => {
-    const { email} = req.body;
+    const { email } = req.body;
     const user = await User.findOne({ email });
     const upName = user?.name.charAt(0).toUpperCase() + user?.name.slice(1).toLowerCase();
+  
 
     if (!user) {
-      res
-        .status(400).send({ error: true, message: "User not found!" });
+      res.status(400).send({ error: true, message: "User not found!" });
       return;
-    }else if(!user.isVerified){
-      await User.deleteOne({_id:user._id})
+    } else if (!user.verified) {
+      await User.deleteOne({ _id: user._id });
       res.status(400).send({ error: true, message: "User not found!" });
       return;
     }
-
+  
     const tokenData = "Token " + passwordEncrypt(user._id + `${new Date()}`);
     await Token.create({ userId: user._id, token: tokenData });
-
-    fotgotPassVerify({email, name:upName, userId:user._id});
-
+  
+    fotgotPassVerify({ email, name: upName, userId: user._id });
+  
     res.status(201).send({
       error: false,
       Token: tokenData,
-      result:user,
+      result: user,
     });
   },
+  
 
   updatePassword: async (req, res) => {
     const password = req.body.password;
