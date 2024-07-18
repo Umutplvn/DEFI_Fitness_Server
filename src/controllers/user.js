@@ -8,6 +8,7 @@ const passwordEncrypt = require("../helpers/passwordEncrypt");
 const User = require("../models/user");
 const Token = require("../models/token");
 const sendVerificationEmail = require("../helpers/emailVerification");
+const fotgotPassVerify = require("../helpers/forgotPassVerify");
 
 
 module.exports = {
@@ -85,6 +86,29 @@ module.exports = {
         message: "There is no recording to be deleted.",
       });
     }
+  },
+
+  forgotPass: async (req, res) => {
+    const { email} = req.body;
+    const user = await User.findOne({ email });
+    const upName = user?.name.charAt(0).toUpperCase() + user?.name.slice(1).toLowerCase();
+
+    if (!user) {
+      res
+        .status(400)
+        .send({ error: true, message: "User not found!" });
+      return;
+    }
+    const tokenData = "Token " + passwordEncrypt(user._id + `${new Date()}`);
+    const token = await Token.create({ userId: user._id, token: tokenData });
+
+    fotgotPassVerify({email, name:upName, token:token._id});
+
+    res.status(201).send({
+      error: false,
+      Token: tokenData,
+      user:user,
+    });
   },
 
   updatePassword: async (req, res) => {
