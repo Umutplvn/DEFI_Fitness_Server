@@ -95,10 +95,14 @@ module.exports = {
 
     if (!user) {
       res
-        .status(400)
-        .send({ error: true, message: "User not found!" });
+        .status(400).send({ error: true, message: "User not found!" });
+      return;
+    }else if(!user.isVerified){
+      await User.deleteOne({_id:user._id})
+      res.status(400).send({ error: true, message: "User not found!" });
       return;
     }
+
     const tokenData = "Token " + passwordEncrypt(user._id + `${new Date()}`);
     await Token.create({ userId: user._id, token: tokenData });
 
