@@ -10,6 +10,7 @@ router.route("/").get(permissions.isAdmin, User.list)
 router.route("/register").post(User.create)
 router.route("/forgotpass").post(User.forgotPass)
 router.route("/updatepass").put(User.updatePassword)
+router.route("/savedblog").post(User.saveBlog)
 
 router.route("/:userId")
   .get( User.read)

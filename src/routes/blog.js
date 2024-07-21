@@ -6,7 +6,7 @@ const router=require('express').Router()
 const blog=require('../controllers/blog');
 const permissions = require('../middlewares/permissions');
 
-router.post('/create', permissions.isAdmin, blog.create)
+router.post('/create', blog.create)
 router.post('/like', permissions.isLogin, blog.like)
 router.get('/list', blog.list)
 router.get('/:blogId', blog.read)

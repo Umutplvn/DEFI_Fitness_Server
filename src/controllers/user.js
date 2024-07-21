@@ -7,6 +7,7 @@ require("express-async-errors");
 const passwordEncrypt = require("../helpers/passwordEncrypt");
 const User = require("../models/user");
 const Token = require("../models/token");
+const Blog = require("../models/blog");
 const sendVerificationEmail = require("../helpers/emailVerification");
 const fotgotPassVerify = require("../helpers/forgotPassVerify");
 
@@ -87,6 +88,33 @@ module.exports = {
       });
     }
   },
+
+  saveBlog: async (req, res) => {
+    const userId = req.user;
+    const user = await User.findOne({ _id: userId });
+    const { blogId } = req.body;
+  
+    if (!user) {
+      return res.status(404).send({ error: "User not found" });
+    }
+  
+    const checkBlog = user.savedBlog.some((item) => item._id.toString() == blogId);
+  
+    if (checkBlog) {
+      user.savedBlog = user?.savedBlog.filter((item) => item._id.toString() !== blogId);
+    } else {
+      const blog = await Blog.findOne({ _id: blogId });
+      user?.savedBlog.push(blog);
+    }
+  
+    await user.save();
+  
+    res.send({
+      result: user,
+    });
+  },
+  
+  
 
   forgotPass: async (req, res) => {
     const { email } = req.body;
