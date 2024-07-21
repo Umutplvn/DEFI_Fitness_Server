@@ -10,6 +10,7 @@ router.post('/newmessage', permissions.isLogin, Message.create)
 router.put('/reaction', permissions.isLogin, Message.addReaction)
 router.patch('/reaction', permissions.isLogin, Message.addReaction)
 router.post('/reply', permissions.isLogin, Message.reply)
+router.post('/send-email', Message.formEmail)
 router.put('/delete', permissions.isLogin, Message.delete)
 router.patch('/delete', permissions.isLogin, Message.delete)
 

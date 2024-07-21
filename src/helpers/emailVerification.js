@@ -1,11 +1,10 @@
 const nodemailer = require('nodemailer');
 
-// Create a transport object using SMTP
 const transporter = nodemailer.createTransport({
   service: 'Gmail',
   auth: {
-    user: 'defifitnessapp@gmail.com', // Replace with your Gmail email address password: Rah1zunf123 
-    pass: 'vimg gcbr mgqg vxzf' // Replace with your Gmail app password
+    user: 'defifitnessapp@gmail.com', 
+    pass: process.env.pass 
   }
 });
 
