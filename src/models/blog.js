@@ -59,6 +59,11 @@ const BlogSchema = new mongoose.Schema(
         transform: function(){ return this.likes.length }
     },
 
+    isFree:{
+      type:Boolean,
+      default:true
+    },
+
     post_views:[{
         type:String
     }]
