@@ -62,11 +62,19 @@ module.exports = {
   },
 
   delete: async (req, res) => {
-    const { commentId } = req.body;
+  //   {
+  //     "commentId": "66a07a194aab58ba16524b6a",
+  //     "blogId": "669d7b2a0866616388013124"
+  // }
+    const { commentId, blogId } = req.body;
     const data = await Comment.deleteOne({ _id: commentId });
+    const blogComment=await Blog.findOne({_id:blogId}).populate("comments")
+
     if (data.deletedCount >= 1) {
       res.send({
         message: "Comment successfully deleted",
+        result:blogComment
+
       });
     } else {
       res.send({
