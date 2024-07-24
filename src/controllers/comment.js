@@ -10,21 +10,23 @@ const Blog = require("../models/blog");
 
 module.exports = {
   create: async (req, res) => {
-    // {
-    //     "text":"Deneme yorumu"
-    // }
-    const { blogId } = req.params;
-    const { text } = req.body;
+  //  {
+  //     "text":"deneeme 2",
+  //     "blogId":"669d7b2a0866616388013124"
+  // }
+    const { text,blogId } = req.body;
     const { name, avatar, _id } = await User.findOne({ _id: req.user });
 
-    const comment = await Comment.create({
-      comment: { text, name, avatar, userId:_id },
+    const data = await Comment.create({
+      comment: { text, name, avatar, userId:_id, blogId },
     });
-    await Blog.updateOne({ _id: blogId }, { $push: { comments: comment._id } });
+    await Blog.updateOne({ _id: blogId }, { $push: { comments: data._id } });
+    
+    const blogComment=await Blog.findOne({_id:blogId}).populate("comments")
 
     res.send({
       error: false,
-      result: comment,
+      result:blogComment
     });
   },
 
