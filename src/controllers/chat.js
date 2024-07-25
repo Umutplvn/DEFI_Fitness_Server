@@ -23,7 +23,10 @@ module.exports = {
                 result: chat,
             })
         }else{
-            const newChat = await Chat.create({memberId:[userId, secondId],  members: [user, secondUser], })
+            const newChat = await Chat.create({memberId:[userId, secondId],  members: [
+              { _id: user._id, email: user.email, name: user.name, avatar: user.avatar, membership:user.membership },
+              { _id: secondUser._id, email: secondUser.email, name: secondUser.name, avatar: secondUser.avatar, membership:user.membership },
+            ], })
         
             res.status(200).json({
                 result: newChat,
