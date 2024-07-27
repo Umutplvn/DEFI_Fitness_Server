@@ -15,12 +15,18 @@ const fotgotPassVerify = require("../helpers/forgotPassVerify");
 module.exports = {
   list: async (req, res) => {
     const data = await req.getModelList(User);
+    const filteredData = data.map(user => ({
+      _id: user._id,
+      email: user.email,
+      avatar: user.avatar,
+      name: user.name,
+    }));
 
     res.status(200).send({
       error: false,
-      count: data.length,
-      result: data,
-    });
+      count: filteredData.length,
+      result: filteredData,
+    })
   },
 
   create: async (req, res) => {
