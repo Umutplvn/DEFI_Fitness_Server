@@ -20,6 +20,8 @@ module.exports = {
       email: user.email,
       avatar: user.avatar,
       name: user.name,
+      isAdmin:user.isAdmin,
+      membership:user.membership
     }));
 
     res.status(200).send({
