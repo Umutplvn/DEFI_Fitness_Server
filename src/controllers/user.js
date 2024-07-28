@@ -21,7 +21,8 @@ module.exports = {
       avatar: user.avatar,
       name: user.name,
       isAdmin:user.isAdmin,
-      membership:user.membership
+      membership:user.membership,
+      level:user.level
     }));
 
     res.status(200).send({
