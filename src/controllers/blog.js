@@ -62,6 +62,7 @@ module.exports = {
     });
   },
 
+  
   delete: async (req, res) => {
     const { blogId } = req.params;
     const data = await Blog.deleteOne({ _id: blogId });
