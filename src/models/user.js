@@ -73,8 +73,9 @@ const UserSchema = new mongoose.Schema(
     },
     
     level: {
-      type: String,
-      trim: true
+      type: Number,
+      trim: true,
+      default:1 
     },
 
     savedBlog: [
