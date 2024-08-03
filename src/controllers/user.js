@@ -21,7 +21,7 @@ module.exports = {
       avatar: user.avatar,
       name: user.name,
       isAdmin:user.isAdmin,
-      verified:user,
+      verified:user.verified,
       membership:user.membership,
       level:user.level
     }));
