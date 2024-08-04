@@ -18,22 +18,13 @@ module.exports = {
   },
 
   create: async (req, res) => {
-    //   SAMPLE DATA
-    //   {
-    //     "category_name": "Deneme Category",
-    //     "status": "public",
-    //     "title":"ağlıklı Yaşam İçin Egzersiz ve Beslenmenin Önemi",
-    //     "content": "Sağlıklı bir yaşam sürdürmek..."
-    // }
-
+ 
     const { _id, name, avatar } = await User.findOne({ _id: req.user });
-    const { category_name, status, content, title } = req.body;
+    const {  content, image } = req.body;
     const blog = await Blog.create({
       author: { _id, name, avatar },
-      status,
-      category_name,
       content,
-      title,
+      image,
     });
 
     res.status(201).send({
@@ -62,7 +53,7 @@ module.exports = {
     });
   },
 
-  
+
   delete: async (req, res) => {
     const { blogId } = req.params;
     const data = await Blog.deleteOne({ _id: blogId });

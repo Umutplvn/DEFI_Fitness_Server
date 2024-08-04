@@ -18,15 +18,6 @@ const BlogSchema = new mongoose.Schema(
       trim: true,
     },
 
-    title: {
-      type: String,
-      trim: true,
-    },
-
-    category_name: {
-      type: String,
-    },
-
     author: {
       type: Object,
     },
@@ -48,11 +39,6 @@ const BlogSchema = new mongoose.Schema(
         type: Number,
         default:0,
         transform: function(){ return this.likes.length }
-    },
-
-    isFree:{
-      type:Boolean,
-      default:true
     },
 
     post_views:[{
