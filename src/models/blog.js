@@ -16,28 +16,19 @@ const BlogSchema = new mongoose.Schema(
     content: {
       type: String,
       trim: true,
-      required:true
     },
 
     title: {
       type: String,
       trim: true,
-      required:true
     },
 
     category_name: {
       type: String,
-      required: true,
-    },
-
-    status: {
-      type: String,
-      enum: ["public", "draft"],
     },
 
     author: {
       type: Object,
-      required: true,
     },
 
     comments: [
