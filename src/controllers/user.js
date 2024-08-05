@@ -60,6 +60,29 @@ module.exports = {
     });
   },
 
+  createUserByAdmin: async (req, res) => {
+    const { email, password, name, surname, level, membership, gender } = req.body;
+    const userEmail = await User.findOne({ email });
+
+    if (userEmail) {
+      res
+        .status(400)
+        .send({ error: true, message: "The email address is already in use." });
+      return;
+    }
+
+    const newUser = await User.create({ email, password, name, surname, level, membership, gender, verified:true });
+    const tokenData = "Token " + passwordEncrypt(newUser._id + `${new Date()}`);
+    await Token.create({ userId: newUser._id, token: tokenData });
+
+
+    res.status(201).send({
+      error: false,
+      result: newUser,
+      Token: tokenData,
+    });
+  },
+
   read: async (req, res) => {
     const data = await User.findOne({ _id: req.params.userId });
 
