@@ -107,6 +107,37 @@ module.exports = {
     });
   },
 
+  uploadWorkoutPlan: async (req, res) => {
+    const {workoutplan, level, userId} = req.body;
+
+    if(userId){
+      const updatedUser = await User.updateOne(
+        { _id: userId },
+        workoutplan,
+        { new: true, runValidators: true }
+      );
+      res.status(202).send({
+        error: false,
+        result: updatedUser,
+      });
+    }else if(level){
+      const updatedUser = await User.updateMany(
+        { level: level },
+        workoutplan,
+        { new: true, runValidators: true }
+      );
+      res.status(202).send({
+        error: false,
+        result: updatedUser,
+      });
+    }else {
+      res.status(400).send({
+        error: true,
+        message: 'No user info or level provided.',
+      });
+    }
+  },
+
   delete: async (req, res) => {
     const {userId}= req.params
     const data = await User.deleteOne({ _id:userId });
