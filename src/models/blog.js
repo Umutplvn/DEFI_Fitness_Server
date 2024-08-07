@@ -18,6 +18,11 @@ const BlogSchema = new mongoose.Schema(
       trim: true,
     },
 
+    tags: {
+      type: [String], 
+      trim: true,
+    },
+
     author: {
       type: Object,
     },

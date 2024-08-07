@@ -20,11 +20,12 @@ module.exports = {
   create: async (req, res) => {
  
     const { _id, name, avatar } = await User.findOne({ _id: req.user });
-    const {  content, image } = req.body;
+    const {  content, image, tags } = req.body;
     const blog = await Blog.create({
       author: { _id, name, avatar },
       content,
       image,
+      tags
     });
 
     res.status(201).send({
