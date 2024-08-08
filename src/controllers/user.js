@@ -11,26 +11,25 @@ const Blog = require("../models/blog");
 const sendVerificationEmail = require("../helpers/emailVerification");
 const fotgotPassVerify = require("../helpers/forgotPassVerify");
 
-
 module.exports = {
   list: async (req, res) => {
     const data = await req.getModelList(User);
-    const filteredData = data.map(user => ({
+    const filteredData = data.map((user) => ({
       _id: user._id,
       email: user.email,
       avatar: user.avatar,
       name: user.name,
-      isAdmin:user.isAdmin,
-      verified:user.verified,
-      membership:user.membership,
-      level:user.level
+      isAdmin: user.isAdmin,
+      verified: user.verified,
+      membership: user.membership,
+      level: user.level,
     }));
 
     res.status(200).send({
       error: false,
       count: filteredData.length,
       result: filteredData,
-    })
+    });
   },
 
   create: async (req, res) => {
@@ -61,7 +60,8 @@ module.exports = {
   },
 
   createUserByAdmin: async (req, res) => {
-    const { email, password, name, surname, level, membership, gender } = req.body;
+    const { email, password, name, surname, level, membership, gender } =
+      req.body;
     const userEmail = await User.findOne({ email });
 
     if (userEmail) {
@@ -71,10 +71,18 @@ module.exports = {
       return;
     }
 
-    const newUser = await User.create({ email, password, name, surname, level, membership, gender, verified:true });
+    const newUser = await User.create({
+      email,
+      password,
+      name,
+      surname,
+      level,
+      membership,
+      gender,
+      verified: true,
+    });
     const tokenData = "Token " + passwordEncrypt(newUser._id + `${new Date()}`);
     await Token.create({ userId: newUser._id, token: tokenData });
-
 
     res.status(201).send({
       error: false,
@@ -90,7 +98,6 @@ module.exports = {
       error: false,
       result: data,
     });
-
   },
 
   update: async (req, res) => {
@@ -108,39 +115,41 @@ module.exports = {
   },
 
   uploadWorkoutPlan: async (req, res) => {
-    const {workoutplan, level, userId} = req.body;
+    const { workoutplan, level, userId } = req.body;
 
-    if(userId){
+    if (userId) {
       const updatedUser = await User.updateOne(
         { _id: userId },
-        workoutplan,
+        { $set: { workoutplan } },
         { new: true, runValidators: true }
       );
+
       res.status(202).send({
         error: false,
         result: updatedUser,
       });
-    }else if(level){
-      const updatedUser = await User.updateMany(
+    } else if (level) {
+      const updatedUsers = await User.updateMany(
         { level: level },
-        workoutplan,
+        { $set: { workoutplan } },
         { new: true, runValidators: true }
       );
+
       res.status(202).send({
         error: false,
-        result: updatedUser,
+        result: updatedUsers,
       });
-    }else {
+    } else {
       res.status(400).send({
         error: true,
-        message: 'No user info or level provided.',
+        message: "No user info or level provided.",
       });
     }
   },
 
   delete: async (req, res) => {
-    const {userId}= req.params
-    const data = await User.deleteOne({ _id:userId });
+    const { userId } = req.params;
+    const data = await User.deleteOne({ _id: userId });
     await Token.deleteOne({ userId: userId });
     if (data.deletedCount >= 1) {
       res.send({
@@ -157,34 +166,36 @@ module.exports = {
     const userId = req.user;
     const user = await User.findOne({ _id: userId });
     const { blogId } = req.body;
-  
+
     if (!user) {
       return res.status(404).send({ error: "User not found" });
     }
-  
-    const checkBlog = user.savedBlog.some((item) => item._id.toString() == blogId);
-  
+
+    const checkBlog = user.savedBlog.some(
+      (item) => item._id.toString() == blogId
+    );
+
     if (checkBlog) {
-      user.savedBlog = user?.savedBlog.filter((item) => item._id.toString() !== blogId);
+      user.savedBlog = user?.savedBlog.filter(
+        (item) => item._id.toString() !== blogId
+      );
     } else {
       const blog = await Blog.findOne({ _id: blogId });
       user?.savedBlog.push(blog);
     }
-  
+
     await user.save();
-  
+
     res.send({
       result: user,
     });
   },
-  
-  
 
   forgotPass: async (req, res) => {
     const { email } = req.body;
     const user = await User.findOne({ email });
-    const upName = user?.name.charAt(0).toUpperCase() + user?.name.slice(1).toLowerCase();
-  
+    const upName =
+      user?.name.charAt(0).toUpperCase() + user?.name.slice(1).toLowerCase();
 
     if (!user) {
       res.status(400).send({ error: true, message: "User not found!" });
@@ -194,19 +205,18 @@ module.exports = {
       res.status(400).send({ error: true, message: "User not found!" });
       return;
     }
-  
+
     const tokenData = "Token " + passwordEncrypt(user._id + `${new Date()}`);
     await Token.create({ userId: user._id, token: tokenData });
-  
+
     fotgotPassVerify({ email, name: upName, userId: user._id });
-  
+
     res.status(201).send({
       error: false,
       Token: tokenData,
       result: user,
     });
   },
-  
 
   updatePassword: async (req, res) => {
     const password = req.body.password;
