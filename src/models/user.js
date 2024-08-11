@@ -85,11 +85,10 @@ const UserSchema = new mongoose.Schema(
       },
     ],
 
-    sportBranch: [
+    sportBranch: 
       {
         type: String,
       },
-    ],
   },
   { timestamps: true, collection: "user" }
 );
