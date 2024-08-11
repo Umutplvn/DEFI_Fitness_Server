@@ -59,8 +59,8 @@ const UserSchema = new mongoose.Schema(
 
     membership: {
       type: String,
-      default: "Bronze",
-      enum: ["Bronze", "Silver", "Gold"],
+      default: "Basic",
+      enum: ["Basic", "Premium"],
     },
 
     workoutplan: {
