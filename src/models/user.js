@@ -32,7 +32,6 @@ const UserSchema = new mongoose.Schema(
     dateOfBirth: {
       type: Date,
       trim: true,
-      default:"02/02/1995"
     },
 
     gender: {
