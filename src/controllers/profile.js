@@ -24,7 +24,7 @@ const userId=req.user
   },
 
   read: async (req, res) => {
-    const { userId } = req.params;
+    const { userId } = req.body;
     const profile = await Profile.find({ userId: userId });
     res.send({
       Profile: profile,
