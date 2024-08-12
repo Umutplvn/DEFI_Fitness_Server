@@ -8,7 +8,6 @@ const permissions =require('../middlewares/permissions')
 
 router.route('/').post(Profile.create)
 router.route('/:userId').get(permissions.isOwn, Profile.read)
-router.route('/update/:userId').put(permissions.isOwn, Profile.update)
 router.route('/delete').delete(permissions.isOwn, Profile.delete)
 
 

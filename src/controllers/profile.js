@@ -8,14 +8,13 @@ const Profile = require("../models/profile");
 
 module.exports = {
   create: async (req, res) => {
-    const { height, weight, PR, size } = req.body;
-
+    const { FMI, PR, size } = req.body;
+const userId=req.user
     const profile = await Profile.create({
-      height,
-      weight,
+      FMI,
       PR,
       size,
-      userId: req.user,
+      userId
     });
 
     res.send({
@@ -29,33 +28,6 @@ module.exports = {
     const profile = await Profile.find({ userId: userId });
     res.send({
       Profile: profile,
-    });
-  },
-
-  update: async (req, res) => {
-    // SAMPLE DATA - Hangi datayi degistirirsen degistir diger verileride yollaman lazim
-    //   {
-    //     "subDocType": "PR", _id verisi
-    //     "subDocId": "66820cb321cf6c1d811bd50e", 
-    //     "updateData": {
-    //         "Bench": "190",
-    //         "Squat": "180",
-    //         "Deadlift": "100",
-    //         "Date": "30.06.2024"
-    //     }
-    // }
-
-    const { subDocType, subDocId, updateData } = req.body;
-
-    const updatedProfile = await Profile.findOneAndUpdate(
-      { _id: subDocId },
-      { $set: { [`${subDocType}`]: updateData } },
-      { new: true }
-    );
-
-    res.send({
-      message: "Profile updated.",
-      Profile: updatedProfile,
     });
   },
 
