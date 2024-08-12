@@ -39,9 +39,11 @@ app.all('/', (req, res)=>{
 //! Routes:
 app.use("/users", require("./src/routes/user"))
 app.use("/auth", require("./src/routes/auth"))
-app.use("/profile", require("./src/routes/profile"))
 app.use("/blog", require("./src/routes/blog"))
 app.use("/comment", require("./src/routes/comment"))
+app.use("/bmi", require("./src/routes/bmi"))
+app.use("/pr", require("./src/routes/pr"))
+app.use("/size", require("./src/routes/size"))
 
 
 
