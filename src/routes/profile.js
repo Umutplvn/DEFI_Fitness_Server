@@ -7,8 +7,8 @@ const Profile=require('../controllers/profile')
 const permissions =require('../middlewares/permissions')
 
 router.route('/').post(Profile.create)
-router.route('/:userId').get(permissions.isOwn, Profile.read)
-router.route('/delete').delete(permissions.isOwn, Profile.delete)
+router.route('/:userId').get(Profile.read)
+router.route('/delete').delete(Profile.delete)
 
 
 
