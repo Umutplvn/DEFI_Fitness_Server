@@ -130,7 +130,7 @@ module.exports = {
       });
     } else if (level) {
       const updatedUsers = await User.updateMany(
-        { level: level },
+        { level: level, membership: "Premium"},
         { $set: { workoutplan } },
         { new: true, runValidators: true }
       );
