@@ -38,20 +38,20 @@ const ProfileSchema = new mongoose.Schema(
     },
 
     // Height and Weight required for FMI
-    FMI: [{
+    FMI: {
       type: Object,
       trim: true,
-    }],
+    },
 
     // PR Chart
-    PR: [{
+    PR: {
       type: Object,
-    }],
+    },
 
     // Body Size Chart
-    size: [{
+    size: {
       type: Object,
-    }],
+    },
   },
   { timestamps: true, collection: "profile" }
 );
