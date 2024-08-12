@@ -10,8 +10,8 @@ const PR = require("../models/pr");
 module.exports = {
   create: async (req, res) => {
     const userId=req.user
-    const { bench, deadlift, squad } = req.body;
-    const data=await PR.create({bench, deadlift, squad, userId})
+    const { bench, deadlift, squat } = req.body;
+    const data=await PR.create({bench, deadlift, squat, userId})
 
     res.send({
       error: false,

@@ -23,7 +23,7 @@ const PRSchema = new mongoose.Schema(
       trim: true,
       required: true,
     },
-    squad: {
+    squat: {
       type: Number,
       trim: true,
       required: true,
