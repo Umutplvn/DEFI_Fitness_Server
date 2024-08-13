@@ -6,8 +6,12 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const User = require('../models/user');
 
 const createCheckoutSession = async (req, res) => {
-  const { priceId } = req.body;
-const userId=req.user.toString()
+  const { priceId, userId } = req.body;
+
+  if (!userId) {
+    return res.status(400).json({ error: 'User ID is required' });
+  }
+
   try {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
@@ -15,7 +19,7 @@ const userId=req.user.toString()
       mode: 'subscription',
       success_url: `http://localhost:3000/success`,
       cancel_url: `http://localhost:3000/cancel`,
-      metadata: { userId: userId },
+      metadata: { userId: userId.toString() }, 
     });
 
     res.json({ sessionId: session.id });
