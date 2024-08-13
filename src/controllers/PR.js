@@ -30,6 +30,34 @@ module.exports = {
     });
   },
 
+
+  deleteAll: async (req, res) => {
+    try {
+      const userId = req.user.toString();
+  
+      const data = await PR.deleteMany({ userId: userId });
+  
+      if (data.deletedCount >= 1) {
+        res.status(200).send({
+          message: "PR history successfully deleted",
+        });
+      } else {
+        res.status(404).send({
+          message: "There is no data to be deleted.",
+        });
+      }
+    } catch (error) {
+      res.status(500).send({
+        message: "An error occurred while deleting the PR history.",
+        error: error.message,
+      });
+    }
+  }
+  ,
+  
+  
+
+
   delete: async (req, res) => {
    
     const { PRid } = req.params;
@@ -37,11 +65,11 @@ module.exports = {
    
     if (data.deletedCount >= 1) {
       res.send({
-        message: "Comment successfully deleted",
+        message: "PR data successfully deleted",
       });
     } else {
       res.send({
-        message: "There is no comment to be deleted.",
+        message: "There is no PR data to be deleted.",
       });
     }
   },

@@ -30,6 +30,30 @@ module.exports = {
     });
   },
 
+
+  deleteAll: async (req, res) => {
+    try {
+      const userId = req.user.toString();
+  
+      const data = await Size.deleteMany({ userId: userId });
+  
+      if (data.deletedCount >= 1) {
+        res.status(200).send({
+          message: "Body Size history successfully deleted",
+        });
+      } else {
+        res.status(404).send({
+          message: "There is no data to be deleted.",
+        });
+      }
+    } catch (error) {
+      res.status(500).send({
+        message: "An error occurred while deleting the Body Size history.",
+        error: error.message,
+      });
+    }
+  },
+
   delete: async (req, res) => {
    
     const { sizeId } = req.params;
