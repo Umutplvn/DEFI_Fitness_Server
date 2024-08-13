@@ -29,7 +29,7 @@ const createCheckoutSession = async (req, res) => {
 
 const handleCheckoutSessionCompleted = async (event) => {
   const session = event.data.object;
-  const userId = session.metadata.userId;
+  const userId = "66b9511761ae758591c75227"
 
   try {
     await User.updateOne({_id:userId}, { membership: 'Premium' });
