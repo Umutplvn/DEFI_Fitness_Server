@@ -7,7 +7,7 @@ const User = require('../models/user');
 
 const createCheckoutSession = async (req, res) => {
   const { priceId } = req.body;
-
+const userId=req.user.toString()
   try {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
@@ -15,7 +15,7 @@ const createCheckoutSession = async (req, res) => {
       mode: 'subscription',
       success_url: `http://localhost:3000/success`,
       cancel_url: `http://localhost:3000/cancel`,
-      metadata: { userId: req.user._id },
+      metadata: { userId: userId },
     });
 
     res.json({ sessionId: session.id });
