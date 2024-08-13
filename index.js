@@ -8,11 +8,13 @@ const app=express()
 require('dotenv').config()
 const PORT=process.env.PORT
 const HOST=process.env.HOST
+const bodyParser = require('body-parser');
 
 /*--------------------------------------*/
 
 app.use(express.json())
 app.use(require('cors')())
+app.use(bodyParser.json()); 
 
 /*--------------------------------------*/
 //! Connect to MongoDB with Mongoose:
@@ -44,6 +46,7 @@ app.use("/comment", require("./src/routes/comment"))
 app.use("/bmi", require("./src/routes/bmi"))
 app.use("/pr", require("./src/routes/pr"))
 app.use("/size", require("./src/routes/size"))
+app.use("/api/stripe", require("./src/routes/Striperoutes"))
 
 
 

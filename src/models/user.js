@@ -89,6 +89,11 @@ const UserSchema = new mongoose.Schema(
       {
         type: String,
       },
+
+    stripeCustomerId: {
+        type: String, 
+        trim: true,
+      },
   },
   { timestamps: true, collection: "user" }
 );
