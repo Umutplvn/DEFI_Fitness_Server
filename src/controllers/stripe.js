@@ -1,4 +1,7 @@
-// controllers/stripeController.js
+"use strict";
+/* -------------------------------------------------------
+    EXPRESSJS - DEFI Project
+------------------------------------------------------- */
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const User = require('../models/user');
 

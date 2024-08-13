@@ -46,7 +46,7 @@ app.use("/comment", require("./src/routes/comment"))
 app.use("/bmi", require("./src/routes/bmi"))
 app.use("/pr", require("./src/routes/pr"))
 app.use("/size", require("./src/routes/size"))
-app.use("/api", require("./src/routes/stripeRoutes"))
+app.use("/api", require("./src/routes/stripe"))
 
 
 
