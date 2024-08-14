@@ -34,7 +34,8 @@ const handleCheckoutSessionCompleted = async (event) => {
   const userId = session.metadata.userId;
  
   try {
-    await User.updateOne({_id:userId}, { membership: 'Premium' });
+    const objectId = mongoose.Types.ObjectId(userId);
+    await User.updateOne({_id:objectId}, { membership: 'Premium' });
   } catch (error) {
     console.error('Error updating user membership:', error);
     await new Promise(resolve => setTimeout(resolve, 100000));
