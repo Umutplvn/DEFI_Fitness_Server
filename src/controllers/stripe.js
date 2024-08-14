@@ -17,11 +17,11 @@ const createCheckoutSession = async (req, res) => {
       payment_method_types: ['card'],
       line_items: [{ price: priceId, quantity: 1 }],
       mode: 'subscription',
-      success_url: `http://localhost:3000/profile`,
-      cancel_url: `http://localhost:3000/profile`,
+      // success_url: `http://localhost:3000/profile`,
+      // cancel_url: `http://localhost:3000/profile`,
       metadata: { userId: userId.toString() }, 
     });
-    res.json({ sessionId: session.id, metadata });
+    res.json({ sessionId: session.id });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -31,8 +31,11 @@ const handleCheckoutSessionCompleted = async (event) => {
   const session = event.data.object;
   const userId = session.metadata.userId;
 
+  console.log('Webhook received, session ID:', session.id); 
+
   try {
-    await User.updateOne({_id:userId}, { membership: 'Premium' });
+    const result = await User.updateOne({ _id: userId }, { membership: 'Premium' });
+    console.log('User update result:', result); 
   } catch (error) {
     console.error('Error updating user membership:', error);
   }
