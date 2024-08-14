@@ -6,7 +6,7 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const User = require('../models/user');
 
 const createCheckoutSession = async (req, res) => {
-  const { priceId, userId } = req.body;
+  const { priceId, userId, email } = req.body;
 
   if (!userId) {
     return res.status(400).json({ error: 'User ID is required' });
@@ -19,7 +19,8 @@ const createCheckoutSession = async (req, res) => {
       mode: 'subscription',
       success_url: `http://localhost:3000/profile`,
       cancel_url: `http://localhost:3000/profile`,
-      metadata: { userId: userId.toString() }, 
+      metadata: { userId: userId }, 
+      email: email
     });
     console.log("session", session);
     res.json({ sessionId: session.id });
