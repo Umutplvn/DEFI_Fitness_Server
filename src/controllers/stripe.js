@@ -21,7 +21,7 @@ const createCheckoutSession = async (req, res) => {
       cancel_url: `http://localhost:3000/profile`,
       metadata: { userId: userId.toString() }, 
     });
-    res.json({ sessionId: session.id });
+    res.json({ sessionId: session.id, metadata });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
