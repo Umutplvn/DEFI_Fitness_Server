@@ -8,13 +8,11 @@ const app=express()
 require('dotenv').config()
 const PORT=process.env.PORT
 const HOST=process.env.HOST
-const bodyParser = require('body-parser');
 
 /*--------------------------------------*/
 
 app.use(express.json())
 app.use(require('cors')())
-app.use(bodyParser.json()); 
 
 /*--------------------------------------*/
 //! Connect to MongoDB with Mongoose:
