@@ -60,7 +60,6 @@ const webhook = async (req, res) => {
 
   try {
     const event = stripe.webhooks.constructEvent(req.rawBody, sig, endpointSecret);
-    console.log('Webhook received:', event);
 
     if (event.type === 'checkout.session.completed') {
       await handleCheckoutSessionCompleted(event);
