@@ -24,8 +24,6 @@ const createCheckoutSession = async (req, res) => {
       customer_email: email,  
       metadata: { userId: userId }
     });
-
-    console.log("Checkout session created:", session);
     res.json({ sessionId: session.id });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -50,12 +48,12 @@ const webhook = async (req, res) => {
   const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
   try {
-   const event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
+    // Ham veriyi req.rawBody kullanarak doğrulayın
+    const event = stripe.webhooks.constructEvent(req.rawBody, sig, endpointSecret);
     console.log('Webhook received:', event);
 
     if (event.type === 'checkout.session.completed') {
-      // await handleCheckoutSessionCompleted(event);
-      console.log(event);
+      await handleCheckoutSessionCompleted(event);
     }
 
     res.json({ received: true });
