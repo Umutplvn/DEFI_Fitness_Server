@@ -1,7 +1,8 @@
 "use strict";
 /* -------------------------------------------------------
-    EXPRESSJS - DEFI Project
+    STRIPE - DEFI Project
 ------------------------------------------------------- */
+
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const mongoose = require('mongoose');
 const User = require('../models/user');
@@ -23,7 +24,8 @@ const createCheckoutSession = async (req, res) => {
       customer_email: email,  
       metadata: { userId: userId }
     });
-    console.log("session", session);
+
+    console.log("Checkout session created:", session);
     res.json({ sessionId: session.id });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -40,8 +42,6 @@ const handleCheckoutSessionCompleted = async (event) => {
     console.log(`User with ID: ${userId} updated to Premium`);
   } catch (error) {
     console.error('Error updating user membership:', error);
-    await new Promise(resolve => setTimeout(resolve, 100000));
-    console.log('Sending response to Stripe');
   }
 };
 
@@ -52,15 +52,17 @@ const webhook = async (req, res) => {
 
   try {
     event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
+    console.log('Webhook received:', event);
+
+    if (event.type === 'checkout.session.completed') {
+      await handleCheckoutSessionCompleted(event);
+    }
+
+    res.json({ received: true });
   } catch (err) {
+    console.error('Webhook signature verification failed.', err.message);
     return res.status(400).send(`Webhook Error: ${err.message}`);
   }
-
-  if (event.type === 'checkout.session.completed') {
-    await handleCheckoutSessionCompleted(event);
-  }
-
-  res.json({ received: true });
 };
 
 module.exports = {
