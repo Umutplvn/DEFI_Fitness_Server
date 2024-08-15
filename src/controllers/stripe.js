@@ -36,7 +36,7 @@ const handleCheckoutSessionCompleted = async (event) => {
 
   try {
     const objectId = mongoose.Types.ObjectId(userId);
-    const result = await User.updateOne({ _id: objectId }, { membership: 'Premium' });
+    const result = await User.findOneAndUpdate({ _id: objectId }, { membership: 'Premium' });
 
     if (result.modifiedCount > 0) {
       console.log(`User with ID: ${userId} updated to Premium`);
