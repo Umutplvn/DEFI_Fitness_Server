@@ -36,12 +36,18 @@ const handleCheckoutSessionCompleted = async (event) => {
 
   try {
     const objectId = mongoose.Types.ObjectId(userId);
-    await User.updateOne({ _id: objectId }, { membership: 'Premium' });
-    console.log(`User with ID: ${userId} updated to Premium`);
+    const result = await User.updateOne({ _id: objectId }, { membership: 'Premium' });
+
+    if (result.modifiedCount > 0) {
+      console.log(`User with ID: ${userId} updated to Premium`);
+    } else {
+      console.error(`User with ID: ${userId} was not updated.`);
+    }
   } catch (error) {
     console.error('Error updating user membership:', error);
   }
 };
+
 
 const webhook = async (req, res) => {
   const sig = req.headers['stripe-signature'];
