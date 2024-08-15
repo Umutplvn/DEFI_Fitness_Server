@@ -3,6 +3,7 @@
     EXPRESSJS - DEFI Project
 ------------------------------------------------------- */
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const mongoose = require('mongoose');
 const User = require('../models/user');
 
 const createCheckoutSession = async (req, res) => {
@@ -19,8 +20,8 @@ const createCheckoutSession = async (req, res) => {
       mode: 'subscription',
       success_url: `http://localhost:3000/profile`,
       cancel_url: `http://localhost:3000/profile`,
-      metadata: { userId: userId }, 
-      email: email
+      customer_email: email,  
+      metadata: { userId: userId }
     });
     console.log("session", session);
     res.json({ sessionId: session.id });
@@ -32,14 +33,14 @@ const createCheckoutSession = async (req, res) => {
 const handleCheckoutSessionCompleted = async (event) => {
   const session = event.data.object;
   const userId = session.metadata.userId;
- 
+
   try {
     const objectId = mongoose.Types.ObjectId(userId);
-    await User.updateOne({_id:objectId}, { membership: 'Premium' });
+    await User.updateOne({ _id: objectId }, { membership: 'Premium' });
+    console.log(`User with ID: ${userId} updated to Premium`);
   } catch (error) {
     console.error('Error updating user membership:', error);
     await new Promise(resolve => setTimeout(resolve, 100000));
-
     console.log('Sending response to Stripe');
   }
 };
