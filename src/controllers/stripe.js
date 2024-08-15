@@ -48,14 +48,14 @@ const handleCheckoutSessionCompleted = async (event) => {
 const webhook = async (req, res) => {
   const sig = req.headers['stripe-signature'];
   const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
-  let event;
 
   try {
-    event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
+   const event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
     console.log('Webhook received:', event);
 
     if (event.type === 'checkout.session.completed') {
-      await handleCheckoutSessionCompleted(event);
+      // await handleCheckoutSessionCompleted(event);
+      console.log(event);
     }
 
     res.json({ received: true });
