@@ -20,7 +20,7 @@ app.use(bodyParser.json());
 //! Connect to MongoDB with Mongoose:
 require('./src/configs/dbConnection')
 
-//!
+//! Authorization Middleware
 app.use(require("./src/middlewares/authorization"));
 
 /*--------------------------------------*/
@@ -28,12 +28,12 @@ app.use(require("./src/middlewares/authorization"));
 app.use(require('./src/middlewares/findSearchSortPage'))
 
 /*--------------------------------------*/
-//! Home Page
 
+//! Home Page
 app.all('/', (req, res)=>{
     res.send({
         err:false,
-        message:'Welcome to Chat APP',
+        message:'Welcome to DEFI APP',
     })
 })
 
