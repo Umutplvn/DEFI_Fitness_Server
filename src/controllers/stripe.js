@@ -31,14 +31,13 @@ const createCheckoutSession = async (req, res) => {
 };
 
 const handleCheckoutSessionCompleted = async (event) => {
-  const session = event.data.object;
-  const userId = session.metadata.userId;
+  // const session = event.data.object;
+  const userId = metadata.userId;
 
   try {
-    const objectId = mongoose.Types.ObjectId(userId);
 
     const result = await User.findOneAndUpdate(
-      { _id: objectId },
+      { _id: userId },
       { membership: 'Premium' },
       { new: true, runValidators: true }
     );
@@ -59,7 +58,6 @@ const webhook = async (req, res) => {
   const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
   try {
-    // Ham veriyi req.rawBody kullanarak doğrulayın
     const event = stripe.webhooks.constructEvent(req.rawBody, sig, endpointSecret);
     console.log('Webhook received:', event);
 
