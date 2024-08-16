@@ -1,8 +1,4 @@
 "use strict";
-/* -------------------------------------------------------
-    STRIPE - DEFI Project
-------------------------------------------------------- */
-
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const mongoose = require('mongoose');
 const User = require('../models/user');
@@ -21,7 +17,7 @@ const createCheckoutSession = async (req, res) => {
       mode: 'subscription',
       success_url: `http://localhost:3000/profile`,
       cancel_url: `http://localhost:3000/profile`,
-      customer_email: email,  
+      customer_email: email,
       metadata: { userId: userId }
     });
     res.json({ sessionId: session.id });
@@ -43,7 +39,7 @@ const handleCheckoutSessionCompleted = async (event) => {
       { new: true, runValidators: true }
     );
 
-if (result.modifiedCount > 0) {
+    if (result.modifiedCount > 0) {
       console.log(`User with ID: ${userId} updated to Premium`);
     } else {
       console.error(`User with ID: ${userId} was not updated.`);
@@ -53,13 +49,12 @@ if (result.modifiedCount > 0) {
   }
 };
 
-
 const webhook = async (req, res) => {
   const sig = req.headers['stripe-signature'];
   const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
   try {
-    const event = stripe.webhooks.constructEvent(req.rawBody, sig, endpointSecret);
+    const event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
 
     if (event.type === 'checkout.session.completed') {
       await handleCheckoutSessionCompleted(event);
