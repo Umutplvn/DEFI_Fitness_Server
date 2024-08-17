@@ -10,9 +10,9 @@ const PORT = process.env.PORT;
 const HOST = process.env.HOST;
 
 /*--------------------------------------*/
+app.use(require('cors')());
 app.use("/api", require("./src/routes/stripe"));
 app.use(express.json());
-app.use(require('cors')());
 
 /*--------------------------------------*/
 //! Connect to MongoDB with Mongoose:
