@@ -34,10 +34,9 @@ app.post('/api/webhook', express.raw({ type: 'application/json' }), async (req, 
         const userId = session.metadata.userId;
   
         try {
-          const objectId = mongoose.Types.ObjectId(userId);
   
           const result = await User.findOneAndUpdate(
-            { _id: objectId },
+            { _id: userId },
             { membership: 'Premium' },
             { new: true, runValidators: true }
           );
