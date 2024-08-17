@@ -16,7 +16,7 @@ const bodyParser = require('body-parser');
 /*--------------------------------------*/
 
 //! Middleware for JSON parsing and CORS
-app.use(express.json());
+// app.use(express.json());
 app.use(require('cors')());
 
 /*--------------------------------------*/
