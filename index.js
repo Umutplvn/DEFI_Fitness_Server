@@ -1,4 +1,4 @@
-"use strict"
+"use strict";
 /* -------------------------------------------------------
     EXPRESSJS - DEFI Project
 ------------------------------------------------------- */
@@ -8,10 +8,16 @@ const app = express();
 require('dotenv').config();
 const PORT = process.env.PORT;
 const HOST = process.env.HOST;
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY); 
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const mongoose = require('mongoose'); // Added mongoose
 const User = require('./src/models/user');
+const bodyParser = require('body-parser');
 
 /*--------------------------------------*/
+//! Middleware for raw body parsing for Stripe
+app.use(bodyParser.raw({ type: 'application/json' })); 
+
+//! Webhook route
 app.post('/api/webhook', async (req, res) => {
     const sig = req.headers['stripe-signature'];
     const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
@@ -47,10 +53,11 @@ app.post('/api/webhook', async (req, res) => {
       console.error('Webhook signature verification failed.', err.message);
       return res.status(400).send(`Webhook Error: ${err.message}`);
     }
-  });
+});
 
 /*--------------------------------------*/
 
+//! Middleware for JSON parsing and CORS
 app.use(express.json());
 app.use(require('cors')());
 
@@ -84,7 +91,7 @@ app.use("/comment", require("./src/routes/comment"));
 app.use("/bmi", require("./src/routes/bmi"));
 app.use("/pr", require("./src/routes/pr"));
 app.use("/size", require("./src/routes/size"));
-app.use("/api", require("./src/routes/stripe"));
+app.use("/api", require("./src/routes/stripe")); 
 
 /*--------------------------------------*/
 //! errorHandler:
