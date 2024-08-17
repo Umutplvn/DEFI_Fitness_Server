@@ -39,7 +39,7 @@ const handleCheckoutSessionCompleted = async (event) => {
       { new: true, runValidators: true }
     );
 
-    if (result.modifiedCount > 0) {
+    if (result) {
       console.log(`User with ID: ${userId} updated to Premium`);
     } else {
       console.error(`User with ID: ${userId} was not updated.`);
