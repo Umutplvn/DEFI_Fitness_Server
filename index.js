@@ -8,6 +8,8 @@ const app = express();
 require('dotenv').config();
 const PORT = process.env.PORT;
 const HOST = process.env.HOST;
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY); 
+const User = require('./src/models/user');
 
 /*--------------------------------------*/
 app.post('/api/webhook', async (req, res) => {
@@ -46,7 +48,7 @@ app.post('/api/webhook', async (req, res) => {
       return res.status(400).send(`Webhook Error: ${err.message}`);
     }
   });
-  
+
 /*--------------------------------------*/
 
 app.use(express.json());
