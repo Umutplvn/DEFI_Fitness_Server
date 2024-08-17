@@ -10,6 +10,44 @@ const PORT = process.env.PORT;
 const HOST = process.env.HOST;
 
 /*--------------------------------------*/
+app.post('/api/webhook', async (req, res) => {
+    const sig = req.headers['stripe-signature'];
+    const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
+  
+    try {
+      const event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
+      
+      if (event.type === 'checkout.session.completed') {
+        const session = event.data.object;
+        const userId = session.metadata.userId;
+  
+        try {
+          const objectId = mongoose.Types.ObjectId(userId);
+  
+          const result = await User.findOneAndUpdate(
+            { _id: objectId },
+            { membership: 'Premium' },
+            { new: true, runValidators: true }
+          );
+  
+          if (result) {
+            console.log(`User with ID: ${userId} updated to Premium`);
+          } else {
+            console.error(`User with ID: ${userId} was not updated.`);
+          }
+        } catch (error) {
+          console.error('Error updating user membership:', error);
+        }
+      }
+  
+      res.json({ received: true });
+    } catch (err) {
+      console.error('Webhook signature verification failed.', err.message);
+      return res.status(400).send(`Webhook Error: ${err.message}`);
+    }
+  });
+  
+/*--------------------------------------*/
 
 app.use(express.json());
 app.use(require('cors')());
