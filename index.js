@@ -35,7 +35,7 @@ app.post('/api/webhook', express.raw({ type: 'application/json' }), async (req, 
   
         try {
   
-          const result = await User.findOneAndUpdate(
+          const result = await User.updateOne(
             { _id: userId },
             { membership: 'Premium' },
             { new: true, runValidators: true }
