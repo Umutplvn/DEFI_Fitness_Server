@@ -10,9 +10,9 @@ const PORT = process.env.PORT;
 const HOST = process.env.HOST;
 
 /*--------------------------------------*/
-app.use(require('cors')());
-app.use("/api", require("./src/routes/stripe"));
+
 app.use(express.json());
+app.use(require('cors')());
 
 /*--------------------------------------*/
 //! Connect to MongoDB with Mongoose:
@@ -44,6 +44,7 @@ app.use("/comment", require("./src/routes/comment"));
 app.use("/bmi", require("./src/routes/bmi"));
 app.use("/pr", require("./src/routes/pr"));
 app.use("/size", require("./src/routes/size"));
+app.use("/api", require("./src/routes/stripe"));
 
 /*--------------------------------------*/
 //! errorHandler:
