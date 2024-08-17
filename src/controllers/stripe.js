@@ -1,7 +1,7 @@
 "use strict";
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
-
+const User =require('../models/user')
 const createCheckoutSession = async (req, res) => {
   const { priceId, userId, email } = req.body;
 
@@ -31,14 +31,14 @@ const cancelSubscription = async (req, res) => {
     try {
       const deletedSubscription = await stripe.subscriptions.del(subscriptionId);
   
-      const result = await User.findByIdAndUpdate(
+      const result = await User.updateOne(
         userId,
         { membership: 'Basic' },
         { new: true, runValidators: true }
       );
   
       if (result) {
-        console.log(`User with ID: ${userId} updated to Free`);
+        console.log(`User with ID: ${userId} updated to Basic`);
       } else {
         console.error(`User with ID: ${userId} was not updated.`);
       }
