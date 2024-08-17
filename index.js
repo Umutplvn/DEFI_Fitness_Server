@@ -14,6 +14,13 @@ const User = require('./src/models/user');
 const bodyParser = require('body-parser');
 
 /*--------------------------------------*/
+
+//! Middleware for JSON parsing and CORS
+app.use(express.json());
+app.use(require('cors')());
+
+/*--------------------------------------*/
+
 //! Middleware for raw body parsing for Stripe
 app.use(bodyParser.raw({ type: 'application/json' })); 
 
@@ -56,12 +63,8 @@ app.post('/api/webhook', async (req, res) => {
 });
 
 /*--------------------------------------*/
-
-//! Middleware for JSON parsing and CORS
 app.use(express.json());
-app.use(require('cors')());
 
-/*--------------------------------------*/
 //! Connect to MongoDB with Mongoose:
 require('./src/configs/dbConnection');
 
