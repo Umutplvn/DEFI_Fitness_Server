@@ -16,16 +16,13 @@ const bodyParser = require('body-parser');
 /*--------------------------------------*/
 
 //! Middleware for JSON parsing and CORS
-// app.use(express.json());
 app.use(require('cors')());
 
 /*--------------------------------------*/
 
-//! Middleware for raw body parsing for Stripe
-app.use(bodyParser.raw({ type: 'application/json' })); 
-
 //! Webhook route
-app.post('/api/webhook', async (req, res) => {
+
+app.post('/api/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
     const sig = req.headers['stripe-signature'];
     const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
   
