@@ -9,6 +9,11 @@ require('dotenv').config();
 const PORT = process.env.PORT;
 const HOST = process.env.HOST;
 
+/*--------------------------------------*/
+
+app.use(require('cors')());
+app.use("/api", require("./src/routes/stripe"));
+app.use(express.json());
 
 /*--------------------------------------*/
 //! Connect to MongoDB with Mongoose:
@@ -16,11 +21,6 @@ require('./src/configs/dbConnection');
 
 //! Authorization Middleware
 app.use(require("./src/middlewares/authorization"));
-
-/*--------------------------------------*/
-app.use(require('cors')());
-app.use("/api", require("./src/routes/stripe"));
-app.use(express.json());
 
 /*--------------------------------------*/
 //! Searching&Sorting&Pagination:
