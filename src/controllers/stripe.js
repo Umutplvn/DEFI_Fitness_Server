@@ -25,6 +25,33 @@ const createCheckoutSession = async (req, res) => {
   }
 };
 
+const cancelSubscription = async (req, res) => {
+    const { subscriptionId } = req.params;
+    const { userId } = req.body; 
+    try {
+      const deletedSubscription = await stripe.subscriptions.del(subscriptionId);
+  
+      const result = await User.findByIdAndUpdate(
+        userId,
+        { membership: 'Basic' },
+        { new: true, runValidators: true }
+      );
+  
+      if (result) {
+        console.log(`User with ID: ${userId} updated to Free`);
+      } else {
+        console.error(`User with ID: ${userId} was not updated.`);
+      }
+  
+      res.status(200).json(deletedSubscription);
+    } catch (error) {
+      console.error('Failed to cancel subscription:', error);
+      res.status(500).json({ error: error.message });
+    }
+  };
+  
+  
 module.exports = {
   createCheckoutSession,
+  cancelSubscription
 };

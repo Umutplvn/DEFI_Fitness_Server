@@ -32,12 +32,19 @@ app.post('/api/webhook', express.raw({ type: 'application/json' }), async (req, 
       if (event.type === 'checkout.session.completed') {
         const session = event.data.object;
         const userId = session.metadata.userId;
-  
+        const customerId = session.customer;
+        const subscriptions = await stripe.subscriptions.list({
+            customer: customerId,
+            status: 'all',
+            expand: ['data.default_payment_method'],
+          });
+        const subscription = subscriptions.data[0];
+        const subscriptionId = subscription.id;
         try {
   
           const result = await User.updateOne(
             { _id: userId },
-            { membership: 'Premium' },
+            { membership: 'Premium', stripeCustomerId:subscriptionId },
             { new: true, runValidators: true }
           );
   
