@@ -11,7 +11,7 @@ const HOST = process.env.HOST;
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-
+const User=require('./src/models/user')
 /*--------------------------------------*/
 
 //! Middleware for JSON parsing and CORS
