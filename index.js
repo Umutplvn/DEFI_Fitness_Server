@@ -63,7 +63,7 @@ app.post('/api/webhook', express.raw({ type: 'application/json' }), async (req, 
             const customerId = subscription.customer;
 
             try {
-                const user = await User.findOneAndUpdate(
+                const user = await User.updateOne(
                     { stripeCustomerId: customerId },
                     { membership: 'Basic' },
                     { new: true, runValidators: true }
