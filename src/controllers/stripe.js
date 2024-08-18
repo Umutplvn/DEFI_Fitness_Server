@@ -29,7 +29,7 @@ const cancelSubscription = async (req, res) => {
     const { userId } = req.body;
 
     try {
-        const deletedSubscription = await stripe.subscriptions.del(subscriptionId);
+        const deletedSubscription = await stripe.subscriptions.cancel(subscriptionId);
 
         const result = await User.updateOne(
             { _id: userId },
