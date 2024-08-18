@@ -31,4 +31,4 @@ const sendCancellationEmail = async (email) => {
   });
 };
 
-module.exports = { sendCancellationEmail };
+module.exports = sendCancellationEmail;

@@ -13,7 +13,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const User=require('./src/models/user')
 const  sendInvoiceEmail  = require('./src/helpers/sendInvoice'); 
-const {sendCancellationEmail}=require('./src/helpers/cancellationNotification');
+const sendCancellationEmail=require('./src/helpers/cancellationNotification');
 
 /*--------------------------------------*/
 
@@ -91,7 +91,7 @@ app.post('/api/webhook', express.raw({ type: 'application/json' }), async (req, 
                     console.log(`User with ID: ${userId} updated to Basic`);
                     const email = user.email;
                     await sendCancellationEmail(email);
-                    
+
                 } else {
                     console.error(`User with customer ID: ${customerId} was not found.`);
                 }
