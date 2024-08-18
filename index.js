@@ -34,7 +34,7 @@ app.post('/api/webhook', express.raw({ type: 'application/json' }), async (req, 
             const session = event.data.object;
             const userId = session.metadata.userId;
             const customerId = session.customer;
-            const user = await User.findOne({_id:userId});
+            const user = await User.findOne({ _id: userId });
             const email = user.email;
 
             const subscriptions = await stripe.subscriptions.list({
@@ -52,13 +52,13 @@ app.post('/api/webhook', express.raw({ type: 'application/json' }), async (req, 
                     { membership: 'Premium', stripeCustomerId: subscriptionId },
                     { new: true, runValidators: true }
                 );
-                
 
                 if (result) {
                     console.log(`User with ID: ${userId} updated to Premium`);
                 } else {
                     console.error(`User with ID: ${userId} was not updated.`);
                 }
+
                 const invoices = await stripe.invoices.list({
                     customer: customerId,
                     limit: 1
@@ -79,20 +79,19 @@ app.post('/api/webhook', express.raw({ type: 'application/json' }), async (req, 
             const customerId = subscription.customer;
 
             try {
-               await User.updateOne(
-                    { stripeCustomerId: customerId },
-                    { membership: 'Basic' },
-                    { new: true, runValidators: true }
-                );
-
-                const userId = session.metadata.userId;
-                const user = await User.findOne({_id:userId});
+                const user = await User.findOne({ stripeCustomerId: customerId });
 
                 if (user) {
-                    console.log(`User with ID: ${user._id} updated to Basic`);
-                     const email = user.email;
-                    await sendCancellationEmail(email);
+                    const userId = user._id;
+                    await User.updateOne(
+                        { stripeCustomerId: customerId },
+                        { membership: 'Basic' },
+                        { new: true, runValidators: true }
+                    );
 
+                    console.log(`User with ID: ${userId} updated to Basic`);
+                    const email = user.email;
+                    await sendCancellationEmail(email);
                 } else {
                     console.error(`User with customer ID: ${customerId} was not found.`);
                 }

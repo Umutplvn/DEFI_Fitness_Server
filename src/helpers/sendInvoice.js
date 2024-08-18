@@ -1,7 +1,20 @@
+const nodemailer = require('nodemailer');
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+
+const transporter = nodemailer.createTransport({
+  service: 'Gmail',
+  auth: {
+    user: "defifitnessapp@gmail.com",
+    pass: process.env.pass,
+  },
+});
+
 const sendInvoiceEmail = async (email, invoiceId) => {
+  try {
+
     const invoice = await stripe.invoices.retrieve(invoiceId);
     const invoiceUrl = invoice.hosted_invoice_url; 
-    
+
     const mailOptions = {
       from: 'defifitnessapp@gmail.com',
       to: email,
@@ -13,15 +26,14 @@ const sendInvoiceEmail = async (email, invoiceId) => {
         <p style="font-size: 16px;">If you have any questions, feel free to reach out to us. We're here to help.</p>
         <p style="margin-top: 20px; font-size: 14px; color: #666; text-align: center;">Best regards,<br>DEFI Team</p>
         <p style="font-size: 12px; color: #888; text-align: center; margin-top: 10px;">Toronto, Canada</p>
-      </div>`
+      </div>`,
     };
-  
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        console.error('Error sending invoice email:', error);
-      } else {
-        console.log('Invoice email sent:', info.response);
-      }
-    });
-  };
-  
+
+    await transporter.sendMail(mailOptions);
+    console.log('Invoice email sent successfully');
+  } catch (error) {
+    console.error('Error sending invoice email:', error);
+  }
+};
+
+module.exports = sendInvoiceEmail;
