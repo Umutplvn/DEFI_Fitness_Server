@@ -16,8 +16,8 @@ const createCheckoutSession = async (req, res) => {
       payment_method_types: ["card"],
       line_items: [{ price: priceId, quantity: 1 }],
       mode: "subscription",
-      success_url: `https://defifitness.netlify.app//profile`,
-      cancel_url: `https://defifitness.netlify.app//profile`,
+      success_url: `https://defifitness.netlify.app/profile`,
+      cancel_url: `https://defifitness.netlify.app/profile`,
       customer_email: email,
       metadata: { userId: userId },
     });
