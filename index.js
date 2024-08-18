@@ -82,7 +82,9 @@ app.post('/api/webhook', express.raw({ type: 'application/json' }), async (req, 
 
                 if (user) {
                     const userId = user._id;
-                    await sendCancellationEmail(user.email)
+                    const useremail = await User.findOne({ _id: userId });
+
+                    await sendCancellationEmail(useremail.email)
 
                     await User.updateOne(
                         { _id: userId },
