@@ -78,13 +78,12 @@ app.post('/api/webhook', express.raw({ type: 'application/json' }), async (req, 
             const customerId = subscription.customer;
 
             try {
-            const session = event.data.object;
-            const userId = session.metadata.userId;
-            const customerId = session.customer;
-            const user = await User.findOne({ _id: userId });
+                const user = await User.findOne({ stripeCustomerId: customerId });
+
                 if (user) {
+                    const userId = user._id;
                     await User.updateOne(
-                        { _id: userId },
+                        { stripeCustomerId: customerId },
                         { membership: 'Basic' },
                         { new: true, runValidators: true }
                     );
