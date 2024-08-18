@@ -12,7 +12,7 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const User=require('./src/models/user')
-const  {sendInvoiceEmail}  = require('./src/helpers/sendInvoice'); 
+const  sendInvoiceEmail  = require('./src/helpers/sendInvoice'); 
 const {sendCancellationEmail}=require('./src/helpers/cancellationNotification');
 
 /*--------------------------------------*/
@@ -62,12 +62,11 @@ app.post('/api/webhook', express.raw({ type: 'application/json' }), async (req, 
                 const invoices = await stripe.invoices.list({
                     customer: customerId,
                     limit: 1
-                });
-
+                  });
                 if (invoices.data.length > 0) {
                     const invoiceId = invoices.data[0].id;
                     await sendInvoiceEmail(email, invoiceId);
-                }
+                  }
 
             } catch (error) {
                 console.error('Error updating user membership:', error);
@@ -92,6 +91,7 @@ app.post('/api/webhook', express.raw({ type: 'application/json' }), async (req, 
                     console.log(`User with ID: ${userId} updated to Basic`);
                     const email = user.email;
                     await sendCancellationEmail(email);
+                    
                 } else {
                     console.error(`User with customer ID: ${customerId} was not found.`);
                 }

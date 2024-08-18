@@ -11,9 +11,8 @@ const transporter = nodemailer.createTransport({
 
 const sendInvoiceEmail = async (email, invoiceId) => {
   try {
-
     const invoice = await stripe.invoices.retrieve(invoiceId);
-    const invoiceUrl = invoice.hosted_invoice_url; 
+    const invoiceUrl = invoice.hosted_invoice_url;
 
     const mailOptions = {
       from: 'defifitnessapp@gmail.com',
