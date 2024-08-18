@@ -79,11 +79,14 @@ app.post('/api/webhook', express.raw({ type: 'application/json' }), async (req, 
             const customerId = subscription.customer;
 
             try {
-                const user = await User.updateOne(
+               await User.updateOne(
                     { stripeCustomerId: customerId },
                     { membership: 'Basic' },
                     { new: true, runValidators: true }
                 );
+
+                const userId = session.metadata.userId;
+                const user = await User.findOne({_id:userId});
 
                 if (user) {
                     console.log(`User with ID: ${user._id} updated to Basic`);
