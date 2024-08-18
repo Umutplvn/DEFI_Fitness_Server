@@ -13,6 +13,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const User=require('./src/models/user')
 const  {sendInvoiceEmail}  = require('./src/helpers/sendInvoice'); 
+const {sendCancellationEmail}=require('./src/helpers/cancellationNotification');
 
 /*--------------------------------------*/
 
@@ -83,6 +84,8 @@ app.post('/api/webhook', express.raw({ type: 'application/json' }), async (req, 
                     { membership: 'Basic' },
                     { new: true, runValidators: true }
                 );
+                await sendCancellationEmail(user.email);
+
 
                 if (user) {
                     console.log(`User with ID: ${user._id} updated to Basic`);
