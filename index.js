@@ -82,14 +82,13 @@ app.post('/api/webhook', express.raw({ type: 'application/json' }), async (req, 
                 const user = await User.findOne({ _id: userId });
 
                 if (user) {
+
                     await User.updateOne(
-                        { stripeCustomerId: customerId },
+                        { _id: userId },
                         { membership: 'Basic' },
                         { new: true, runValidators: true }
                     );
-
-                    console.log(`User with ID: ${userId} updated to Basic`);
-                    await sendCancellationEmail(user.email);
+                    await sendCancellationEmail(user.email)
 
                 } else {
                     console.error(`User with customer ID: ${customerId} was not found.`);
