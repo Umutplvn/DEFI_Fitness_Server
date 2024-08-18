@@ -76,12 +76,12 @@ app.post('/api/webhook', express.raw({ type: 'application/json' }), async (req, 
         if (event.type === 'customer.subscription.deleted') {
             const subscription = event.data.object;
             const customerId = subscription.customer;
-
+            const session = event.data.object;
+            const userId = session.metadata.userId;
             try {
-                const user = await User.findOne({ stripeCustomerId: customerId });
+                const user = await User.findOne({ _id: userId });
 
                 if (user) {
-                    const userId = user._id;
                     await User.updateOne(
                         { stripeCustomerId: customerId },
                         { membership: 'Basic' },
@@ -89,8 +89,7 @@ app.post('/api/webhook', express.raw({ type: 'application/json' }), async (req, 
                     );
 
                     console.log(`User with ID: ${userId} updated to Basic`);
-                    const email = user.email;
-                    await sendCancellationEmail(email);
+                    await sendCancellationEmail(user.email);
 
                 } else {
                     console.error(`User with customer ID: ${customerId} was not found.`);
