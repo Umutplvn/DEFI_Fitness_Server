@@ -236,4 +236,25 @@ module.exports = {
       result: newData,
     });
   },
+
+  updateForgottenPassword: async (req, res) => {
+    const password = req.body.password;
+    const {userId}=req.params
+
+    await User.updateOne(
+      { _id: userId },
+      { password: password },
+      {
+        runValidators: true,
+      }
+    );
+    const newData = await User.findOne({ _id: req.user });
+
+    res.status(202).send({
+      error: false,
+      message: "Password has changed successfully.",
+      result: newData,
+    });
+  },
 };
+
