@@ -82,16 +82,13 @@ app.post('/api/webhook', express.raw({ type: 'application/json' }), async (req, 
 
                 if (user) {
                     const userId = user._id;
-                    const useremail = await User.findOne({ _id: userId });
-
 
                     await User.updateOne(
                         { _id: userId },
                         { membership: 'Basic' },
                         { new: true, runValidators: true }
                     );
-                    
-                    await sendCancellationEmail(useremail.email)
+
 
                 } else {
                     console.error(`User with customer ID: ${customerId} was not found.`);

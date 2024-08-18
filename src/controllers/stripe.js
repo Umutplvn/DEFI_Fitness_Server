@@ -2,6 +2,8 @@
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const User =require('../models/user')
+const sendCancellationEmail =require('../helpers/cancellationNotification')
+
 const createCheckoutSession = async (req, res) => {
   const { priceId, userId, email } = req.body;
 
@@ -30,7 +32,7 @@ const createCheckoutSession = async (req, res) => {
 const cancelSubscription = async (req, res) => {
     const { subscriptionId } = req.params;
     const { userId } = req.body;
-
+const user=await User.findOne({_id:userId})
     try {
         const deletedSubscription = await stripe.subscriptions.cancel(subscriptionId);
 
@@ -40,8 +42,10 @@ const cancelSubscription = async (req, res) => {
             { new: true, runValidators: true }
         );
 
+        sendCancellationEmail(user.email)
         if (result) {
             console.log(`User with ID: ${userId} updated to Basic`);
+
         } else {
             console.error(`User with ID: ${userId} was not updated.`);
         }
