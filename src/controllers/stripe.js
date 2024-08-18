@@ -24,6 +24,9 @@ const createCheckoutSession = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+
+
 const cancelSubscription = async (req, res) => {
     const { subscriptionId } = req.params;
     const { userId } = req.body;

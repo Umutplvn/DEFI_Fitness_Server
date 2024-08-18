@@ -12,6 +12,8 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const User=require('./src/models/user')
+const  {sendInvoiceEmail}  = require('./src/helpers/sendInvoice'); 
+
 /*--------------------------------------*/
 
 //! Middleware for JSON parsing and CORS
@@ -31,6 +33,8 @@ app.post('/api/webhook', express.raw({ type: 'application/json' }), async (req, 
             const session = event.data.object;
             const userId = session.metadata.userId;
             const customerId = session.customer;
+            const user = await User.findOne({_id:userId});
+            const email = user.email;
 
             const subscriptions = await stripe.subscriptions.list({
                 customer: customerId,
@@ -47,12 +51,23 @@ app.post('/api/webhook', express.raw({ type: 'application/json' }), async (req, 
                     { membership: 'Premium', stripeCustomerId: subscriptionId },
                     { new: true, runValidators: true }
                 );
+                
 
                 if (result) {
                     console.log(`User with ID: ${userId} updated to Premium`);
                 } else {
                     console.error(`User with ID: ${userId} was not updated.`);
                 }
+                const invoices = await stripe.invoices.list({
+                    customer: customerId,
+                    limit: 1
+                });
+
+                if (invoices.data.length > 0) {
+                    const invoiceId = invoices.data[0].id;
+                    await sendInvoiceEmail(email, invoiceId);
+                }
+
             } catch (error) {
                 console.error('Error updating user membership:', error);
             }
