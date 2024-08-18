@@ -20,7 +20,7 @@ const fotgotPassVerify = ({email, name, userId}) => {
     <p style="margin-bottom: 15px; font-size: 16px;">If you did not make this request, simply ignore and delete this email.
     </p>
     <p style="background-color: #f4f4f4; padding: 10px">
-    <a href="https://defifitness.netlify.app/reset-password/${userId}" style="color: #3C9387; font-weight: bold; font-size: 16px;">Click here to reset your password</a>
+    <a href="http://localhost:3000/reset-password/${userId}" style="color: #3C9387; font-weight: bold; font-size: 16px;">Click here to reset your password</a>
 </p>
     <p style="font-size: 16px;">If you have any questions or need further assistance, feel free to reach out to us. We're here to help.</p>
     <p style="margin-top: 20px; font-size: 14px; color: #666; text-align: center;">Warm regards,<br>DEFI Team</p>
