@@ -9,7 +9,7 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-const fotgotPassVerify = ({email, name, userId}) => {
+const fotgotPassVerify = async({email, name, userId}) => {
   const mailOptions = {
     from: 'defifitnessapp@gmail.com',
     to: email,
@@ -28,13 +28,14 @@ const fotgotPassVerify = ({email, name, userId}) => {
 </div>`
   };
 
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.error(error);
-    } else {
-      console.log('Email sent: ' + info.response);
-    }
-  });
+
+  try {
+    const info = await transporter.sendMail(mailOptions);
+    console.log('Email sent: ' + info.response);
+  } catch (error) {
+    console.error('Error sending email: ', error);
+    throw error;  
+  }
 };
 
 module.exports = fotgotPassVerify;

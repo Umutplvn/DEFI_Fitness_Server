@@ -49,7 +49,7 @@ module.exports = {
     const tokenData = "Token " + passwordEncrypt(newUser._id + `${new Date()}`);
     await Token.create({ userId: newUser._id, token: tokenData });
 
-    sendVerificationEmail(email, passcode, upName);
+    await sendVerificationEmail(email, passcode, upName);
 
     res.status(201).send({
       error: false,
@@ -209,7 +209,7 @@ module.exports = {
     const tokenData = "Token " + passwordEncrypt(user._id + `${new Date()}`);
     await Token.create({ userId: user._id, token: tokenData });
 
-    fotgotPassVerify({ email, name: upName, userId: user._id });
+    await fotgotPassVerify({ email, name: upName, userId: user._id });
 
     res.status(201).send({
       error: false,
